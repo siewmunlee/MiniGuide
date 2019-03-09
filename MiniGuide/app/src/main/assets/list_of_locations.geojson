@@ -28,8 +28,24 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-        103.919886,
-        1.350602
+            103.919886,
+            1.350602
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Location 3",
+        "hours": "9am - 4pm",
+        "phone": "(555) 555-9430",
+        "description": "Location #3 description"
+      },
+      "geometry": {
+      "type": "Point",
+      "coordinates": [
+        103.8618,
+        1.2893
         ]
       }
     }

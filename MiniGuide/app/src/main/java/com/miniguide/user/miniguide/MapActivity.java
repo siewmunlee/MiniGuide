@@ -16,8 +16,10 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,6 +44,10 @@ import com.mapbox.mapboxsdk.plugins.building.BuildingPlugin;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 import com.mapbox.turf.TurfConstants;
 import com.mapbox.turf.TurfConversion;
@@ -92,6 +98,8 @@ public class MapActivity extends AppCompatActivity implements
     private LocationRecyclerViewAdapter styleRvAdapter;
     private int chosenTheme;
     private String TAG = "MapActivity";
+    private Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +224,19 @@ public class MapActivity extends AppCompatActivity implements
                                 showBuildingExtrusions();
                             }
                         }
+
+                        button = findViewById(R.id.startButton);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                        .directionsRoute(currentRoute)
+                                        .shouldSimulateRoute(true)
+                                        .build();
+                                // Call this method with Context from within an Activity
+                                NavigationLauncher.startNavigation(MapActivity.this, options);
+                            }
+                        });
                     }
 
                 });
@@ -313,6 +334,9 @@ public class MapActivity extends AppCompatActivity implements
         } else {
             Toast.makeText(this, R.string.no_internet_message, Toast.LENGTH_LONG).show();
         }
+
+        button.setEnabled(true);
+        button.setBackgroundResource(android.R.color.holo_blue_dark);
     }
 
     /**
@@ -423,16 +447,12 @@ public class MapActivity extends AppCompatActivity implements
 
         Point destinationMarker = Point.fromLngLat(destinationPoint.longitude(), destinationPoint.latitude());
 
-        // Initialize the directionsApiClient object for eventually drawing a navigation route on the map
-        MapboxDirections directionsApiClient = MapboxDirections.builder()
+        NavigationRoute.builder(this)
+                .accessToken(getString(R.string.access_token))
                 .origin(mockCurrentLocation)
                 .destination(destinationMarker)
-                .overview(DirectionsCriteria.OVERVIEW_FULL)
-                .profile(DirectionsCriteria.PROFILE_DRIVING)
-                .accessToken(getString(R.string.access_token))
-                .build();
-
-        directionsApiClient.enqueueCall(new Callback<DirectionsResponse>() {
+                .build()
+                .getRoute(new Callback<DirectionsResponse>() {
             @Override
             public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
                 // Check that the response isn't null and that the response has a route
