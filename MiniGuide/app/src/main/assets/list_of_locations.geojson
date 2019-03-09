@@ -1,0 +1,37 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Location 1",
+        "hours": "6am - 5pm",
+        "phone": "(555) 555-4355",
+        "description": "Location #1 description"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.799019,
+          1.334926
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Location 2",
+        "hours": "9am - 4pm",
+        "phone": "(555) 555-9430",
+        "description": "Location #2 description"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+        103.919886,
+        1.350602
+        ]
+      }
+    }
+  ]
+}
