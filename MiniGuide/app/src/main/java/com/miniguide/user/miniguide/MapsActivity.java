@@ -3,6 +3,13 @@ package com.miniguide.user.miniguide;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+import android.media.MediaPlayer;
+import android.view.View;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class   MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    MediaPlayer player;
 
     // User location
     final LatLng userLoc = new LatLng(1.443828, 103.786199);
@@ -53,4 +61,43 @@ public class   MapsActivity extends FragmentActivity implements OnMapReadyCallba
 //    public boolean onMarkerClick(Marker marker) {
 //        return false;
 //    }
+
+
+    public void play(View v) {
+        if (player == null) {
+            player = MediaPlayer.create(this, R.raw.naruto);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopPlayer();
+                }
+            });
+        }
+
+        player.start();
+    }
+
+    public void pause(View v) {
+        if (player != null) {
+            player.pause();
+        }
+    }
+
+    public void stop(View v) {
+        stopPlayer();
+    }
+
+    private void stopPlayer() {
+        if (player != null) {
+            player.release();
+            player = null;
+            Toast.makeText(this, "MediaPlayer released", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopPlayer();
+    }
 }
