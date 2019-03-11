@@ -217,7 +217,7 @@ public class MapActivity extends AppCompatActivity implements
 
                             mapboxMap.addOnMapClickListener(MapActivity.this);
 
-                            Toast.makeText(MapActivity.this, "Click on a card", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MapActivity.this, "Click on a tourist location!", Toast.LENGTH_SHORT).show();
 
                             // Show 3d buildings if the blue theme is being used
                             if (customThemeManager.getNavigationLineColor() == R.color.navigationRouteLine_blue) {
