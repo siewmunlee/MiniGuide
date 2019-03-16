@@ -1,6 +1,7 @@
 package com.miniguide.user.miniguide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
@@ -12,7 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
-
+import android.os.Bundle;
+import android.widget.Toast;
 /**
  * RecyclerView adapter to display a list of location cards on top of the map
  */
@@ -73,7 +75,7 @@ public class LocationRecyclerViewAdapter extends
 
         switch (selectedTheme) {
             case R.style.AppTheme_Blue:
-                emojiForCircle = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ice_cream_icon, null);
+                emojiForCircle = ResourcesCompat.getDrawable(context.getResources(), R.drawable.marker, null);
                 backgroundCircle = ResourcesCompat.getDrawable(context.getResources(), R.drawable.blue_circle, null);
                 setColors(R.color.colorPrimary_blue, R.color.white, R.color.white, R.color.cardHourAndPhoneTextColor_blue,
                         R.color.cardHourAndPhoneHeaderTextColor_blue, R.color.cardHourAndPhoneTextColor_blue,
@@ -160,6 +162,7 @@ public class LocationRecyclerViewAdapter extends
 
         @Override
         public void onClick(View view) {
+
         }
     }
 }

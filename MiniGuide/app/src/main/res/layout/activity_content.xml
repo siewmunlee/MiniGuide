@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.miniguide.user.miniguide.ContentActivity"
+    android:background="@color/graylight"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="270dp">
+        <LinearLayout
+            android:background="@drawable/gradientbackground"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/littleindia"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:orientation="horizontal"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_view_id"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:textSize="20sp"
+                android:text="Little India" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:id="@+id/text_info"
+                android:scrollbars="vertical"
+
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Although ethnic Indians no longer tend to stay solely segregated in one place as previously arranged under the modern People's Action Party (PAP) policy of racial harmony, for the sake of cultural heritage, many of the ethnically Indian commercial or cottage industry usages are concentrated in Little India, although Indian-dominant commercial zones are also found in HDB estates. Contrary to stereotypes, Little India is not solely an Indian neighbourhood. Located in the neighbourhood alongside shops that cater predominantly to the Indians are Chinese clan associations, places of worship of different religions, and a variety of different business ranging from electrical supplies, hardware, second-hand goods alongside traditional spice grinders and grocers. One of the more prominent examples of cross-cultural patronage besides those regarding food is that many Chinese parents go to shops in Little India to grind rice to make congee for infants. The machinery used in this instance was initially flown in from India to grind spices into powder for use in Indian cuisine. Little India differs from many other neighbourhoods in Singapore in many ways. Tekka Market is also multi-cultural, with produce and sundries that cater to the many ethnic groups in Singapore."/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/playbutton"
+
+                android:onClick="playSong"
+                />
+
+            <ImageButton
+                android:id="@+id/stop_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/stopbutton"
+                android:onClick="stopSong"
+                android:layout_marginRight="20dp"
+                />
+
+            <Button
+                android:id="@+id/exit_button"
+                android:textColor="#000000"
+
+
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exit"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

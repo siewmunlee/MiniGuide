@@ -36,19 +36,24 @@ import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
+import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.building.BuildingPlugin;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-
+import com.mapbox.services.android.navigation.ui.v5.NavigationView;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationTimeFormat;
 import com.mapbox.turf.TurfConstants;
 import com.mapbox.turf.TurfConversion;
 
@@ -57,11 +62,14 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.eq;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
@@ -82,7 +90,7 @@ public class MapActivity extends AppCompatActivity implements
             .include(new LatLng(1.331738, 103.638122))
             .include(new LatLng(1.349455, 103.998185)).build();
     private static final LatLng MOCK_DEVICE_LOCATION_LAT_LNG = new LatLng(1.28094, 103.84763);
-    private static final int MAPBOX_LOGO_OPACITY = 75;
+    private static final int MAPBOX_LOGO_OPACITY = 0;
     private static final int CAMERA_MOVEMENT_SPEED_IN_MILSECS = 1200;
     private static final float NAVIGATION_LINE_WIDTH = 9;
     private static final float BUILDING_EXTRUSION_OPACITY = .8f;
@@ -99,23 +107,21 @@ public class MapActivity extends AppCompatActivity implements
     private int chosenTheme;
     private String TAG = "MapActivity";
     private Button button;
-
-
+    private LocationComponent locationComponent;
+    private NavigationListener navigationListener;
+    private NavigationView navigationView;
+    private View endRoute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Configure the Mapbox access token. Configuration can either be called in your application
         // class or in the same activity which contains the mapview.
         Mapbox.getInstance(this, getString(R.string.access_token));
-
         // Hide the status bar for the map to fill the entire screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         // Inflate the layout with the the MapView. Always inflate this after the Mapbox access token is configured.
         setContentView(R.layout.activity_map);
-
         // Create a GeoJSON feature collection from the GeoJSON file in the assets folder.
         try {
             getFeatureCollectionFromJson();
@@ -126,7 +132,6 @@ public class MapActivity extends AppCompatActivity implements
 
         // Initialize a list of IndividualLocation objects for future use with recyclerview
         listOfIndividualLocations = new ArrayList<>();
-
         // Initialize the theme that was selected in the previous activity. The blue theme is set as the backup default.
         chosenTheme = getIntent().getIntExtra("SELECTED THEME", R.style.AppTheme_Blue);
 
@@ -134,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
+            @Override  @SuppressWarnings( {"MissingPermission"})
             public void onMapReady(final MapboxMap mapboxMap) {
 
                 // Initialize the custom class that handles marker icon creation and map styling based on the selected theme
@@ -146,13 +151,9 @@ public class MapActivity extends AppCompatActivity implements
 
                         // Setting the returned mapboxMap object (directly above) equal to the "globally declared" one
                         MapActivity.this.mapboxMap = mapboxMap;
-
                         // Adjust the opacity of the Mapbox logo in the lower left hand corner of the map
                         ImageView logo = mapView.findViewById(R.id.logoView);
                         logo.setAlpha(MAPBOX_LOGO_OPACITY);
-
-                        // Set bounds for the map camera so that the user can't pan the map outside of the NYC area
-                        mapboxMap.setLatLngBoundsForCameraTarget(LOCKED_MAP_CAMERA_BOUNDS);
 
                         // Set up the SymbolLayer which will show the icons for each store location
                         initStoreLocationIconSymbolLayer();
@@ -175,7 +176,6 @@ public class MapActivity extends AppCompatActivity implements
                         if (featureList != null) {
 
                             for (int x = 0; x < featureList.size(); x++) {
-
                                 Feature singleLocation = featureList.get(x);
 
                                 // Get the single location's String properties to place in its map marker
@@ -211,6 +211,17 @@ public class MapActivity extends AppCompatActivity implements
                             // Add the fake device location marker to the map. In a real use case scenario,
                             // the Maps SDK's LocationComponent can be used to easily display and customize
                             // the device location's puck
+
+                                LocationComponentOptions options = LocationComponentOptions.builder(MapActivity.this)
+                                        .gpsDrawable(customThemeManager.getNavigationLineColor())
+                                        .build();
+                                 //Get an instance of the component
+                                locationComponent = mapboxMap.getLocationComponent();
+
+                                // Activate with options
+                              locationComponent.activateLocationComponent(MapActivity.this, style, options);
+
+
                             addMockDeviceLocationMarkerToMap();
 
                             setUpRecyclerViewOfLocationCards(chosenTheme);
@@ -224,7 +235,6 @@ public class MapActivity extends AppCompatActivity implements
                                 showBuildingExtrusions();
                             }
                         }
-
                         button = findViewById(R.id.startButton);
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -235,8 +245,12 @@ public class MapActivity extends AppCompatActivity implements
                                         .build();
                                 // Call this method with Context from within an Activity
                                 NavigationLauncher.startNavigation(MapActivity.this, options);
+
                             }
                         });
+
+
+
                     }
 
                 });
@@ -503,6 +517,7 @@ public class MapActivity extends AppCompatActivity implements
             // Add the icon image to the map
             style.addImage("mock-device-location-icon-id", customThemeManager.getMockLocationIcon());
 
+
             style.addSource(new GeoJsonSource("mock-device-location-source-id", Feature.fromGeometry(
                     Point.fromLngLat(MOCK_DEVICE_LOCATION_LAT_LNG.getLongitude(), MOCK_DEVICE_LOCATION_LAT_LNG.getLatitude()))));
 
@@ -598,7 +613,11 @@ public class MapActivity extends AppCompatActivity implements
         super.onStop();
         mapView.onStop();
     }
-
+    void onNavigationFinished() {
+        if (navigationListener != null) {
+            navigationListener.onNavigationFinished();
+        }
+    }
     @Override
     public void onPause() {
         super.onPause();
@@ -653,8 +672,8 @@ public class MapActivity extends AppCompatActivity implements
                 case R.style.AppTheme_Blue:
                     mapStyle = getString(R.string.blue_map_style);
                     navigationLineColor = getResources().getColor(R.color.navigationRouteLine_blue);
-                    unselectedMarkerIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_unselected_ice_cream);
-                    selectedMarkerIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_selected_ice_cream);
+                    unselectedMarkerIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker);
+                    selectedMarkerIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker);
                     mockLocationIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_user_location);
                     break;
 

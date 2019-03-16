@@ -4,26 +4,26 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Location 1",
+        "name": "Little India",
         "hours": "6am - 5pm",
-        "phone": "(555) 555-4355",
-        "description": "Location #1 description"
+        "phone": "+65 8888 1111",
+        "description": "This is where Indians are"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          103.799019,
-          1.334926
+          103.848413,
+          1.279628
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Location 2",
+        "name": "China Town",
         "hours": "9am - 4pm",
-        "phone": "(555) 555-9430",
-        "description": "Location #2 description"
+        "phone": "+65 7777 1111",
+        "description": "This is where Chinese are"
       },
       "geometry": {
         "type": "Point",
@@ -36,10 +36,10 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Location 3",
+        "name": "Geylang",
         "hours": "9am - 4pm",
-        "phone": "(555) 555-9430",
-        "description": "Location #3 description"
+        "phone": "+65 6666 1111",
+        "description": "This is where Malays are"
       },
       "geometry": {
       "type": "Point",
