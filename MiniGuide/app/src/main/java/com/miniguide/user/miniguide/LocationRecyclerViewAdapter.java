@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
@@ -25,6 +26,7 @@ public class LocationRecyclerViewAdapter extends
     private Context context;
     private int selectedTheme;
     private static ClickListener clickListener;
+    private static ButtonListener buttonListener;
     private Drawable emojiForCircle = null;
     private Drawable backgroundCircle = null;
     private int upperCardSectionColor = 0;
@@ -55,6 +57,10 @@ public class LocationRecyclerViewAdapter extends
 
     public interface ClickListener {
         void onItemClick(int position);
+    }
+
+    public interface ButtonListener {
+        void onItemBtnClick(int position);
     }
 
     @Override
@@ -137,6 +143,7 @@ public class LocationRecyclerViewAdapter extends
         CardView cardView;
         ImageView backgroundCircleImageView;
         ImageView emojiImageView;
+        Button button;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -152,12 +159,23 @@ public class LocationRecyclerViewAdapter extends
             hoursHeaderTextView = itemView.findViewById(R.id.hours_header_tv);
             milesAbbreviationTextView = itemView.findViewById(R.id.miles_mi_tv);
             cardView = itemView.findViewById(R.id.map_view_location_card);
+
+            button = itemView.findViewById(R.id.infoButton);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buttonListener.onItemBtnClick(getLayoutPosition());
+                }
+            });
+
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     clickListener.onItemClick(getLayoutPosition());
                 }
             });
+
+
         }
 
         @Override

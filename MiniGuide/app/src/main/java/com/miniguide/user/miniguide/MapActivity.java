@@ -2,6 +2,7 @@ package com.miniguide.user.miniguide;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -107,10 +108,13 @@ public class MapActivity extends AppCompatActivity implements
     private int chosenTheme;
     private String TAG = "MapActivity";
     private Button button;
+    private Button informationBtn;
     private LocationComponent locationComponent;
     private NavigationListener navigationListener;
     private NavigationView navigationView;
     private View endRoute;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,9 +252,6 @@ public class MapActivity extends AppCompatActivity implements
 
                             }
                         });
-
-
-
                     }
 
                 });
@@ -351,6 +352,13 @@ public class MapActivity extends AppCompatActivity implements
 
         button.setEnabled(true);
         button.setBackgroundResource(android.R.color.holo_blue_dark);
+    }
+
+
+    @Override
+    public void onItemBtnClick(int position) {
+        Intent mySuperIntent = new Intent(MapActivity.this, ContentActivity.class);
+        startActivity(mySuperIntent);
     }
 
     /**
