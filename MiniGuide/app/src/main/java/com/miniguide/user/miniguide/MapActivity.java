@@ -355,7 +355,6 @@ public class MapActivity extends AppCompatActivity implements
     }
 
 
-    @Override
     public void onItemBtnClick(int position) {
         Intent mySuperIntent = new Intent(MapActivity.this, ContentActivity.class);
         startActivity(mySuperIntent);

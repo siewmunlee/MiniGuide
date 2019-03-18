@@ -26,7 +26,6 @@ public class LocationRecyclerViewAdapter extends
     private Context context;
     private int selectedTheme;
     private static ClickListener clickListener;
-    private static ButtonListener buttonListener;
     private Drawable emojiForCircle = null;
     private Drawable backgroundCircle = null;
     private int upperCardSectionColor = 0;
@@ -57,10 +56,6 @@ public class LocationRecyclerViewAdapter extends
 
     public interface ClickListener {
         void onItemClick(int position);
-    }
-
-    public interface ButtonListener {
-        void onItemBtnClick(int position);
     }
 
     @Override
@@ -149,24 +144,22 @@ public class LocationRecyclerViewAdapter extends
             super(itemView);
             nameTextView = itemView.findViewById(R.id.location_name_tv);
             addressTextView = itemView.findViewById(R.id.location_description_tv);
-            phoneNumTextView = itemView.findViewById(R.id.location_phone_num_tv);
-            phoneHeaderTextView = itemView.findViewById(R.id.phone_header_tv);
-            hoursTextView = itemView.findViewById(R.id.location_hours_tv);
+
             backgroundCircleImageView = itemView.findViewById(R.id.background_circle);
             emojiImageView = itemView.findViewById(R.id.emoji);
             constraintUpperColorSection = itemView.findViewById(R.id.constraint_upper_color);
             distanceNumberTextView = itemView.findViewById(R.id.distance_num_tv);
-            hoursHeaderTextView = itemView.findViewById(R.id.hours_header_tv);
+
             milesAbbreviationTextView = itemView.findViewById(R.id.miles_mi_tv);
             cardView = itemView.findViewById(R.id.map_view_location_card);
 
-            button = itemView.findViewById(R.id.infoButton);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    buttonListener.onItemBtnClick(getLayoutPosition());
-                }
-            });
+//            button = itemView.findViewById(R.id.infoButton);
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    buttonListener.onItemBtnClick(getLayoutPosition());
+//                }
+//            });
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
