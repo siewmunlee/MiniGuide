@@ -10,12 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+
+
 import java.util.List;
-import android.os.Bundle;
-import android.widget.Toast;
+
 /**
  * RecyclerView adapter to display a list of location cards on top of the map
  */
@@ -56,12 +57,17 @@ public class LocationRecyclerViewAdapter extends
 
     public interface ClickListener {
         void onItemClick(int position);
+        void onItemBtnClick();
     }
 
     @Override
     public int getItemCount() {
         return listOfLocations.size();
     }
+
+
+
+
 
     @Override
     public void onBindViewHolder(ViewHolder card, int position) {
@@ -84,7 +90,7 @@ public class LocationRecyclerViewAdapter extends
                 setAlphas(card, .41f, .48f, 100f, .48f,
                         100f,
                         .41f);
-                break;
+
         }
 
         card.emojiImageView.setImageDrawable(emojiForCircle);
@@ -138,42 +144,38 @@ public class LocationRecyclerViewAdapter extends
         CardView cardView;
         ImageView backgroundCircleImageView;
         ImageView emojiImageView;
-        Button button;
 
         ViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.location_name_tv);
             addressTextView = itemView.findViewById(R.id.location_description_tv);
-
+            phoneNumTextView = itemView.findViewById(R.id.location_phone_num_tv);
+            phoneHeaderTextView = itemView.findViewById(R.id.phone_header_tv);
+            hoursTextView = itemView.findViewById(R.id.location_hours_tv);
             backgroundCircleImageView = itemView.findViewById(R.id.background_circle);
             emojiImageView = itemView.findViewById(R.id.emoji);
             constraintUpperColorSection = itemView.findViewById(R.id.constraint_upper_color);
             distanceNumberTextView = itemView.findViewById(R.id.distance_num_tv);
-
+            hoursHeaderTextView = itemView.findViewById(R.id.hours_header_tv);
             milesAbbreviationTextView = itemView.findViewById(R.id.miles_mi_tv);
             cardView = itemView.findViewById(R.id.map_view_location_card);
-
-//            button = itemView.findViewById(R.id.infoButton);
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    buttonListener.onItemBtnClick(getLayoutPosition());
-//                }
-//            });
-
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     clickListener.onItemClick(getLayoutPosition());
+
                 }
             });
-
-
         }
 
         @Override
         public void onClick(View view) {
-
         }
+
+        public void onItemBtnClick(View view) {
+        }
+
+
+
     }
 }

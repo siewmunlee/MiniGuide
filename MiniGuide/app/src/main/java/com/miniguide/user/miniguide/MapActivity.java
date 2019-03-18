@@ -315,6 +315,14 @@ public class MapActivity extends AppCompatActivity implements
      *
      * @param position the clicked card's position/index in the overall list of cards
      */
+
+    @Override
+    public void onItemBtnClick()
+    {
+         Intent mySuperIntent = new Intent(getApplicationContext(), MapActivity.class);
+         startActivity(mySuperIntent);
+    }
+
     @Override
     public void onItemClick(int position) {
         // Get the selected individual location via its card's position in the recyclerview of cards
@@ -355,10 +363,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
 
-    public void onItemBtnClick(int position) {
-        Intent mySuperIntent = new Intent(MapActivity.this, ContentActivity.class);
-        startActivity(mySuperIntent);
-    }
+
 
     /**
      * Adds a SymbolLayer which will show all of the location's icons
