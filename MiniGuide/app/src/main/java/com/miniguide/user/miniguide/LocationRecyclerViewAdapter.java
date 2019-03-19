@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
 
 
 
@@ -28,7 +29,7 @@ public class LocationRecyclerViewAdapter extends
     private int selectedTheme;
     private static ClickListener clickListener;
     private Drawable emojiForCircle = null;
-    private Drawable backgroundCircle = null;
+
     private int upperCardSectionColor = 0;
 
     private int locationNameColor = 0;
@@ -83,7 +84,6 @@ public class LocationRecyclerViewAdapter extends
         switch (selectedTheme) {
             case R.style.AppTheme_Blue:
                 emojiForCircle = ResourcesCompat.getDrawable(context.getResources(), R.drawable.marker, null);
-                backgroundCircle = ResourcesCompat.getDrawable(context.getResources(), R.drawable.blue_circle, null);
                 setColors(R.color.colorPrimary_blue, R.color.white, R.color.white, R.color.cardHourAndPhoneTextColor_blue,
                         R.color.cardHourAndPhoneHeaderTextColor_blue, R.color.cardHourAndPhoneTextColor_blue,
                         R.color.cardHourAndPhoneHeaderTextColor_blue, R.color.white, R.color.white);
@@ -95,7 +95,6 @@ public class LocationRecyclerViewAdapter extends
 
         card.emojiImageView.setImageDrawable(emojiForCircle);
         card.constraintUpperColorSection.setBackgroundColor(upperCardSectionColor);
-        card.backgroundCircleImageView.setImageDrawable(backgroundCircle);
         card.nameTextView.setTextColor(locationNameColor);
         card.phoneNumTextView.setTextColor(locationPhoneNumColor);
         card.hoursTextView.setTextColor(locationHoursColor);
@@ -142,7 +141,7 @@ public class LocationRecyclerViewAdapter extends
         TextView phoneHeaderTextView;
         ConstraintLayout constraintUpperColorSection;
         CardView cardView;
-        ImageView backgroundCircleImageView;
+        Button buttonView;
         ImageView emojiImageView;
 
         ViewHolder(View itemView) {
@@ -152,7 +151,7 @@ public class LocationRecyclerViewAdapter extends
             phoneNumTextView = itemView.findViewById(R.id.location_phone_num_tv);
             phoneHeaderTextView = itemView.findViewById(R.id.phone_header_tv);
             hoursTextView = itemView.findViewById(R.id.location_hours_tv);
-            backgroundCircleImageView = itemView.findViewById(R.id.background_circle);
+
             emojiImageView = itemView.findViewById(R.id.emoji);
             constraintUpperColorSection = itemView.findViewById(R.id.constraint_upper_color);
             distanceNumberTextView = itemView.findViewById(R.id.distance_num_tv);
@@ -166,14 +165,24 @@ public class LocationRecyclerViewAdapter extends
 
                 }
             });
+
+            buttonView = itemView.findViewById(R.id.info_button);
+            buttonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onItemBtnClick();
+
+                }
+            });
         }
 
         @Override
         public void onClick(View view) {
         }
 
-        public void onItemBtnClick(View view) {
-        }
+
+
+
 
 
 
